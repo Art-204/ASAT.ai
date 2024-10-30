@@ -353,8 +353,6 @@ const HomePage = () => {
                       <div>
                         <p className="text-sm text-gray-600">
                           Sentiment: {aspect.sentiment.toFixed(2)}
-                          // Continuing from the previous code...
-
                                                   </p>
                                                   <p className="text-sm text-gray-600">
                                                     Confidence: {(aspect.confidence * 100).toFixed(1)}%
