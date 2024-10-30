@@ -95,30 +95,6 @@ const AspectCorrelationMatrix = ({ relations }) => (
   </div>
 );
 
-const AspectTrendChart = ({ trends }) => (
-  <div className="h-64 w-full">
-    <ResponsiveContainer>
-      <LineChart margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-        {trends.map((trend, index) => (
-          <Line
-            key={trend.aspect}
-            type="monotone"
-            data={trend.timepoints}
-            dataKey="sentiment"
-            name={trend.aspect}
-            stroke={`hsl(${index * 137.508}, 70%, 50%)`}
-          />
-        ))}
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="point" />
-        <YAxis domain={[-1, 1]} />
-        <Tooltip />
-        <Legend />
-      </LineChart>
-    </ResponsiveContainer>
-  </div>
-);
-
 const HomePage = () => {
   const [text, setText] = useState('');
   const [analysis, setAnalysis] = useState(null);
@@ -157,17 +133,18 @@ const HomePage = () => {
   };
 
   return (
-    <main className="min-h-screen p-8 max-w-7xl mx-auto bg-gray-50">
+    <main className="min-h-screen p-4 md:p-8 max-w-7xl mx-auto bg-gray-50">
       <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">
         Advanced Sentiment Analysis Tool
       </h1>
 
       <div className="space-y-8">
         {/* Input Section */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
           <textarea
             className="w-full p-4 border rounded-lg shadow-sm min-h-[150px]
-                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                     text-black bg-white" // Added these colors
             placeholder="Enter your text here..."
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -190,9 +167,9 @@ const HomePage = () => {
         </div>
 
         {analysis && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
             {/* Sentiment Pie Chart */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-4">Overall Sentiment</h2>
               <div className="h-64 w-full">
                 <ResponsiveContainer>
@@ -222,9 +199,9 @@ const HomePage = () => {
             </div>
 
             {/* Model Metrics */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-4">Model Performance</h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                 <MetricCard 
                   title="Accuracy" 
                   value={`${analysis.modelMetrics.accuracy}%`}
@@ -245,13 +222,13 @@ const HomePage = () => {
             </div>
 
             {/* Confusion Matrix */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-4">Confusion Matrix</h2>
               <ConfusionMatrix matrix={analysis.confusionMatrix} />
             </div>
 
             {/* ROC Curve */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-4">ROC Curve</h2>
               <div className="h-64 w-full">
                 <ResponsiveContainer>
@@ -278,7 +255,7 @@ const HomePage = () => {
             </div>
 
             {/* Sentiment Distribution */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-4">Sentiment Distribution</h2>
               <div className="h-64 w-full">
                 <ResponsiveContainer>
@@ -302,9 +279,9 @@ const HomePage = () => {
             </div>
 
             {/* Comparative Analysis */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-4">Comparative Analysis</h2>
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 <MetricCard 
                   title="Industry" 
                   value={analysis.comparativeAnalysis.industry}
@@ -332,7 +309,7 @@ const HomePage = () => {
               </div>
 
               {/* Top Aspects */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-6">
                 {analysis.aspectBasedAnalysis.topAspects.map((aspect, index) => (
                   <div key={index} className="bg-gray-50 p-4 rounded-lg">
                     <h4 className="font-semibold">{aspect.aspect}</h4>
@@ -345,7 +322,7 @@ const HomePage = () => {
               </div>
 
               {/* Aspect Details */}
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 {analysis.aspectBasedAnalysis.aspects.map((aspect, index) => (
                   <div key={index} className="bg-gray-50 p-4 rounded-lg">
                     <h4 className="font-semibold">{aspect.aspect}</h4>
@@ -390,11 +367,7 @@ const HomePage = () => {
                                           <AspectCorrelationMatrix relations={analysis.aspectBasedAnalysis.aspectRelations} />
                                         </div>
 
-                                        {/* Temporal Trends */}
-                                        <div className="mt-8">
-                                          <h3 className="text-xl font-semibold mb-4">Temporal Trends</h3>
-                                          <AspectTrendChart trends={analysis.aspectBasedAnalysis.temporalTrends} />
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                   )}
